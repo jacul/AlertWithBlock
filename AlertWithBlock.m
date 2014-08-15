@@ -25,7 +25,7 @@
 +(AlertWithBlock*)alert:(NSString *)message okbutton:(NSString *)buttontext withBlock:(blockaction)action cancelButton:(NSString *)canceltext cancelBlock:(blockaction)cancelaction{
     NSMutableArray* actions = [NSMutableArray new];
     NSMutableArray* buttontexts = [NSMutableArray new];
-    if (buttontext) {
+    if (buttontext) {//If any action, add to list, if not, add Null object as placeholder.
         [buttontexts addObject:buttontext];
         if (action){
             [actions addObject:action];
@@ -41,19 +41,20 @@
             [actions addObject:[NSNull new]];
         }
     }
-    if (buttontexts.count==0) {
+    if (buttontexts.count==0) {//At least one button is required
         return nil;
     }
     return [self alert:message buttons:buttontexts withBlocks:actions];
 }
 
 +(AlertWithBlock*)alert:(NSString *)message buttons:(NSArray *)buttontexts withBlocks:(NSArray *)arrayOfActions{
-    assert(buttontexts.count ==  arrayOfActions.count);
+    assert(buttontexts.count ==  arrayOfActions.count);//amount of buttons and actions should be the same
     
+    /// Initiaze an alert instance
     AlertWithBlock* alert = [[AlertWithBlock alloc]initWithTitle:nil message:message delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
     alert.delegate = alert;
     alert.actionsArray = arrayOfActions;
-    for (id buttontext in buttontexts) {
+    for (id buttontext in buttontexts) {//Add all buttons
         [alert addButtonWithTitle:[buttontext description]];
     }
     [alert show];
@@ -73,7 +74,7 @@
 
     if (buttonIndex<self.actionsArray.count && buttonIndex>=0) {
         id block = self.actionsArray[buttonIndex];
-        if ([block isKindOfClass:NSClassFromString(@"NSBlock")]) {
+        if ([block isKindOfClass:NSClassFromString(@"NSBlock")]) {//Check if it's a block type
             ((blockaction)block)();
         }
     }
