@@ -1,4 +1,4 @@
 AlertWithBlock
 ==============
 
-Block your UiAlertView!
+Block your UIAlertView!
